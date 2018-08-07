@@ -31,8 +31,7 @@ class NewVisitorTest(unittest.TestCase):
         )
 
         # User types "Buy Groceries"
-        inputbox.send_keys('Buy Groceries')
-
+        inputbox.send_keys("Buy Groceries")
         # When user hits enter, the page lists
         # "1: Buy Groceries" as an item in a to-do list
         inputbox.send_keys(Keys.ENTER)
@@ -40,15 +39,19 @@ class NewVisitorTest(unittest.TestCase):
 
         table = self.browser.find_element_by_id('id_list_table')
         rows = table.find_elements_by_tag_name('tr')
-        self.assertTrue(
-            any(row.text == '1. Buy Groceries' for row in rows),
-            "New to-do item did not appear in table"
-        )
+        self.assertIn('1: Buy Groceries', [row.text for row in rows])
 
         # The text box remains, asking to enter another item.
         # User enters another item "Cook Dinner"
-
+        inputbox = self.browser.find_element_by_id('id_new_item')
+        inputbox.send_keys("Cook Dinner")
+        inputbox.send_keys(Keys.ENTER)
+        time.sleep(1)
         # Page updates again and now shows both items on list
+        table = self.browser.find_element_by_id('id_list_table')
+        rows = table.find_elements_by_tag_name('tr')
+        self.assertIn('1: Buy Groceries', [row.text for row in rows])
+        self.assertIn('2: Cook Dinner', [row.text for row in rows])
 
         # User notices that site has generate a unique url
 
