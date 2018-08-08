@@ -12,6 +12,11 @@ class NewVisitorTest(unittest.TestCase):
     def tearDown(self):
         self.browser.quit()
 
+    def check_for_row_in_list_table(self, row_text):
+        table = self.browser.find_element_by_id('id_list_table')
+        rows = table.find_elements_by_tag_name('tr')
+        self.assertIn(row_text, [row.text for row in rows])
+
     def test_can_start_a_list_and_retrieve_it_later(self):
 
         # User goes to homepage:
@@ -37,9 +42,7 @@ class NewVisitorTest(unittest.TestCase):
         inputbox.send_keys(Keys.ENTER)
         time.sleep(1)
 
-        table = self.browser.find_element_by_id('id_list_table')
-        rows = table.find_elements_by_tag_name('tr')
-        self.assertIn('1: Buy Groceries', [row.text for row in rows])
+        self.check_for_row_in_list_table('1: Buy Groceries')
 
         # The text box remains, asking to enter another item.
         # User enters another item "Cook Dinner"
@@ -48,10 +51,8 @@ class NewVisitorTest(unittest.TestCase):
         inputbox.send_keys(Keys.ENTER)
         time.sleep(1)
         # Page updates again and now shows both items on list
-        table = self.browser.find_element_by_id('id_list_table')
-        rows = table.find_elements_by_tag_name('tr')
-        self.assertIn('1: Buy Groceries', [row.text for row in rows])
-        self.assertIn('2: Cook Dinner', [row.text for row in rows])
+        self.check_for_row_in_list_table('1: Buy Groceries')
+        self.check_for_row_in_list_table('2: Cook Dinner')
 
         # User notices that site has generate a unique url
 
