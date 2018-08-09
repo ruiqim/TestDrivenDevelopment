@@ -68,7 +68,6 @@ class NewVisitorTest(LiveServerTestCase):
         # User visits url and sees list is still there
 
         # User Quits the browser
-        self.fail('Finish the Test!')
 
 
     def test_multiple_users_can_start_lists_at_different_urls(self):
