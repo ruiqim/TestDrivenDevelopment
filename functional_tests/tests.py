@@ -15,6 +15,7 @@ class NewVisitorTest(StaticLiveServerTestCase):
         if staging_server:
             self.live_server_url = 'http://' + staging_server
 
+
     def tearDown(self):
         self.browser.quit()
 
