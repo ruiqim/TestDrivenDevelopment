@@ -5,6 +5,8 @@ from django.http import HttpRequest
 from lists.views import home_page
 from lists.models import Item,List
 
+from django.utils.html import escape
+
 class HomePageTest(TestCase):
 
     def test_uses_home_template(self):
@@ -83,3 +85,11 @@ class NewListTest(TestCase):
         )
 
         self.assertRedirects(response, f'/lists/{correct_list.id}/')
+
+
+    def test_validation_errors_are_sent_back_to_home_page_template(self):
+        response = self.client.post('/lists/new', data={'item_text': ''})
+        self.assertEqual(response.status_code,200)
+        self.assertTemplateUsed(response, 'home.html')
+        expected_error = escape("You can't have an empty list item")
+        self.assertContains(response, expected_error)
