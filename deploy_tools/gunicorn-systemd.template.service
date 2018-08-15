@@ -5,7 +5,7 @@ Description=Gunicorn server for DOMAIN
 Restart=on-failure
 User=rmao
 WorkingDirectory=/home/rmao/sites/DOMAIN
-EnviromentFile=/home/rmao/sites/DOMAIN/.env
+EnvironmentFile=/home/rmao/sites/DOMAIN/.env
 
 ExecStart=/home/rmao/sites/DOMAIN/virtualenv/bin/gunicorn \
     --bind unix:/tmp/DOMAIN.socket \
