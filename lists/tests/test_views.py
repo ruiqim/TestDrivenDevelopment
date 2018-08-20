@@ -34,12 +34,15 @@ class ListViewTest(TestCase):
 
     def test_uses_list_template(self):
         list_=List.objects.create()
+        # Use the Django Test Client
         response = self.client.get(f'/lists/{list_.id}/')
+        # Check the template Used. Check item in the template context
         self.assertTemplateUsed(response, 'list.html')
 
 
     def test_displays_only_items_for_that_list(self):
 
+        #  Testing Template logic
         correct_list = List.objects.create()
         Item.objects.create(text='item 1', list=correct_list)
         Item.objects.create(text='item 2', list=correct_list)
@@ -59,9 +62,11 @@ class ListViewTest(TestCase):
         other_list = List.objects.create()
         correct_list = List.objects.create()
         response = self.client.get(f'/lists/{correct_list.id}/')
+        # Check that any objects are the right ones, or querysets have the correct items.
         self.assertEqual(response.context['list'],correct_list)
 
     def test_can_save_a_POST_request_to_an_existing_list(self):
+
         other_list = List.objects.create()
         correct_list = List.objects.create()
 
@@ -89,6 +94,7 @@ class ListViewTest(TestCase):
     def test_displays_item_form(self):
         list_ = List.objects.create()
         response = self.client.get(f'/lists/{list_.id}/')
+        # Check that forms are of the correct class
         self.assertIsInstance(response.context['form'], ExistingListItemForm)
         self.assertContains(response, 'name="text"')
 
